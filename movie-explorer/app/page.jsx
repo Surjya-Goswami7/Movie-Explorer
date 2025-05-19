@@ -1,13 +1,16 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL } from "./constants";
 import MovieGrid from "./components/MovieGrid";
 import Modal from "./components/Modal";
 
 async function searchMovies(query){
   try {
-    const response = await fetch(`${BASE_URL}/search/movie?api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${encodeURIComponent(query)}`)
+    //console.log(`${BASE_URL}/search/movie?api_key=${process.env.NEXT_PUBLIC_API_KEY}&query=${encodeURIComponent(query)}`)
+
+    const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=66649d9ec3ad3865db73d171ba23cba5&query=${encodeURIComponent(query)}`)
+
     return await response.json();
   } catch(error){
     console.error('Error fetching data in searchMovie', error)
@@ -16,7 +19,7 @@ async function searchMovies(query){
 }
 
 export default function Home() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('Spider');
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null)
 
@@ -24,12 +27,19 @@ export default function Home() {
     setSelectedMovie(movie)
   }
 
-console.log(movies)
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const results = await searchMovies(query);
+    setMovies(results.results)
+     }
+    fetchMovies();
+  },[])
+
 
   function handleCloseModal(){
     setSelectedMovie(null)
   }
-
+  
   async function handleSearch(e){
     e.preventDefault();
     if (!query) return;
