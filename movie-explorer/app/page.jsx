@@ -56,22 +56,23 @@ export default function Home() {
         {/* Search Bar */}
        <form
   onSubmit={handleSearch}
-  className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md bg-white/10 backdrop-blur-md p-2 rounded-lg shadow-md"
+  className="flex flex-row sm:flex-row items-center gap-2 w-full max-w-md bg-white/10 backdrop-blur-md p-2 rounded-lg shadow-md"
 >
   <input
     type="text"
     value={query}
     onChange={(e) => setQuery(e.target.value)}
     placeholder="Search movies..."
-    className="flex-1 px-2 py-1 text-sm rounded-md bg-transparent text-white placeholder-gray-400 focus:outline-none"
+    className="flex-1 px-3 py-2 text-sm rounded-md bg-transparent text-white placeholder-gray-400 focus:outline-none"
   />
   <button
     type="submit"
-    className="px-4 py-1 text-sm bg-gradient-to-r from-blue-500 to-purple-600 rounded-md shadow hover:scale-105 transition-transform duration-200"
+    className="px-4 py-2 text-sm bg-gradient-to-r from-blue-500 to-purple-600 rounded-md shadow hover:scale-105 transition-transform duration-200"
   >
     Search
   </button>
 </form>
+
 
 
 
