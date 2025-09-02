@@ -1,4 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Movie Explorer",
-  description: "Your one stop shop for seeing upcoming, now playing, top rated, and all movie related stuff",
+  description:
+    "Your one stop shop for seeing upcoming, now playing, top rated, and all movie related stuff",
 };
 
 export default function RootLayout({ children }) {
@@ -22,7 +25,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Header />
+        <main className="min-h-screen">{children}</main>
+        <Footer />
       </body>
     </html>
   );
