@@ -1,4 +1,4 @@
-// components/Footer.jsx
+
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
@@ -14,10 +14,10 @@ export default function Footer() {
 
           {/* Navigation Links */}
           <nav className="flex flex-wrap justify-center gap-6 text-sm uppercase tracking-wide">
-            <a href="/" className="hover:text-white transition">Home</a>
+            <a href="/category/upcoming" className="hover:text-white transition">Upcoming</a>
             <a href="/category/popular" className="hover:text-white transition">Popular</a>
             <a href="/category/top_rated" className="hover:text-white transition">Top Rated</a>
-            <a href="/category/upcoming" className="hover:text-white transition">Upcoming</a>
+            <a href="/category/now_playing" className="hover:text-white transition">Now Playing</a>
     
           </nav>
 

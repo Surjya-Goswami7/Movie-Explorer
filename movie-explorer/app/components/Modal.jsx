@@ -2,8 +2,33 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Modal({ movie, onClose }) {
+  const [trailerKey, setTrailerKey] = useState(null);
+
+  useEffect(() => {
+    async function fetchTrailer() {
+      if (!movie?.id) return;
+      const url = `https://api.themoviedb.org/3/movie/${movie.id}/videos?language=en-US`;
+
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
+          accept: "application/json",
+        },
+      });
+
+      const data = await res.json();
+      const trailer = data.results?.find(
+        (vid) => vid.type === "Trailer" && vid.site === "YouTube"
+      );
+      setTrailerKey(trailer?.key || null);
+    }
+
+    fetchTrailer();
+  }, [movie]);
+
   if (!movie) return null;
 
   return (
@@ -23,8 +48,26 @@ export default function Modal({ movie, onClose }) {
           transition={{ duration: 0.3 }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Backdrop Image */}
-          {movie.backdrop_path && (
+          {/* Trailer OR Backdrop */}
+          {trailerKey ? (
+            <div className="relative">
+              <iframe
+                width="100%"
+                height="350"
+                src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+                title="Trailer"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-64 md:h-80"
+              ></iframe>
+              <button
+                className="absolute top-3 right-3 bg-black/60 text-white rounded-full p-2 hover:bg-red-600 transition"
+                onClick={onClose}
+              >
+                ✖
+              </button>
+            </div>
+          ) : movie.backdrop_path ? (
             <div className="relative">
               <Image
                 src={`https://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
@@ -33,7 +76,6 @@ export default function Modal({ movie, onClose }) {
                 height={400}
                 className="w-full h-56 object-cover"
               />
-              {/* Close button */}
               <button
                 className="absolute top-3 right-3 bg-black/60 text-white rounded-full p-2 hover:bg-red-600 transition"
                 onClick={onClose}
@@ -41,7 +83,7 @@ export default function Modal({ movie, onClose }) {
                 ✖
               </button>
             </div>
-          )}
+          ) : null}
 
           {/* Content */}
           <div className="p-6">
